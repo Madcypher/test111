@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Void Portal</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #000000;
+            color: #ffffff;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #ffffff;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 60px 0;
+            border-bottom: 1px solid #333;
+            margin-bottom: 60px;
+        }
+
+        h1 {
+            font-size: 4rem;
+            font-weight: 300;
+            letter-spacing: 8px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            background: linear-gradient(90deg, #fff, #888, #fff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { filter: drop-shadow(0 0 10px rgba(255,255,255,0.3)); }
+            to { filter: drop-shadow(0 0 20px rgba(255,255,255,0.6)); }
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: #888;
+            letter-spacing: 4px;
+            margin-top: 20px;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 60px 0;
+        }
+
+        .card {
+            background: #111;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 30px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: #555;
+            box-shadow: 0 10px 30px rgba(255,255,255,0.1);
+        }
+
+        .card h2 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: #fff;
+        }
+
+        .card p {
+            color: #aaa;
+            line-height: 1.6;
+        }
+
+        .floating-shapes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .shape {
+            position: absolute;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 50%;
+            animation: float 20s infinite;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+            25% {
+                transform: translate(100px, -100px) rotate(90deg);
+            }
+            50% {
+                transform: translate(-50px, -200px) rotate(180deg);
+            }
+            75% {
+                transform: translate(-100px, -50px) rotate(270deg);
+            }
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 0;
+            border-top: 1px solid #333;
+            margin-top: 60px;
+            color: #666;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 12px 30px;
+            background: transparent;
+            border: 1px solid #555;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            margin: 10px;
+            cursor: pointer;
+        }
+
+        .button:hover {
+            background: #222;
+            border-color: #777;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+    <div class="floating-shapes" id="shapes"></div>
+
+    <div class="container">
+        <header>
+            <h1>Void Portal</h1>
+            <p class="subtitle">Welcome to the Void</p>
+        </header>
+
+        <div class="content-grid">
+            <div class="card">
+                <h2>Cosmic Journey</h2>
+                <p>Explore the infinite depths of space and time. Every moment is a new discovery in the vast darkness that surrounds us.</p>
+            </div>
+            <div class="card">
+                <h2>Stellar Dreams</h2>
+                <p>In the silence of the void, thoughts become stars. Each idea shines bright against the endless black canvas.</p>
+            </div>
+            <div class="card">
+                <h2>Nebula Visions</h2>
+                <p>Where light meets darkness, beauty is born. The contrast creates something greater than either alone.</p>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin: 60px 0;">
+            <button class="button" onclick="generateRandomContent()">Generate Random</button>
+            <button class="button" onclick="addMoreStars()">Add Stars</button>
+        </div>
+
+        <footer>
+            <p>&copy; 2024 Void Portal | Infinite Possibilities</p>
+        </footer>
+    </div>
+
+    <script>
+        // Generate random stars
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            const numStars = 200;
+            
+            for (let i = 0; i < numStars; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                star.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                starsContainer.appendChild(star);
+            }
+        }
+
+        // Generate floating shapes
+        function createShapes() {
+            const shapesContainer = document.getElementById('shapes');
+            const numShapes = 5;
+            
+            for (let i = 0; i < numShapes; i++) {
+                const shape = document.createElement('div');
+                shape.className = 'shape';
+                const size = Math.random() * 200 + 50;
+                shape.style.width = size + 'px';
+                shape.style.height = size + 'px';
+                shape.style.left = Math.random() * 100 + '%';
+                shape.style.top = Math.random() * 100 + '%';
+                shape.style.animationDelay = Math.random() * 5 + 's';
+                shape.style.animationDuration = (Math.random() * 10 + 15) + 's';
+                shapesContainer.appendChild(shape);
+            }
+        }
+
+        // Generate random content
+        function generateRandomContent() {
+            const cards = document.querySelectorAll('.card');
+            const titles = [
+                'Quantum Realm', 'Dark Matter', 'Black Hole', 'Galaxy Cluster',
+                'Cosmic Dust', 'Stellar Wind', 'Event Horizon', 'Singularity',
+                'Nebula Cloud', 'Supernova', 'Pulsar', 'Quasar'
+            ];
+            const descriptions = [
+                'Where reality bends and physics breaks down into pure possibility.',
+                'The invisible force that shapes the universe in ways we cannot see.',
+                'A point of infinite density where time and space converge.',
+                'Millions of stars dancing together in cosmic harmony.',
+                'The building blocks of planets, stars, and life itself.',
+                'Particles streaming from stars, painting the cosmos.',
+                'The boundary beyond which nothing can escape.',
+                'The center of infinite possibility and mystery.',
+                'Where stars are born from cosmic clouds of gas and dust.',
+                'The explosive death of a star, creating new elements.',
+                'A spinning neutron star emitting beams of radiation.',
+                'The brightest objects in the universe, powered by black holes.'
+            ];
+
+            cards.forEach(card => {
+                const randomIndex = Math.floor(Math.random() * titles.length);
+                card.querySelector('h2').textContent = titles[randomIndex];
+                card.querySelector('p').textContent = descriptions[randomIndex];
+            });
+        }
+
+        // Add more stars
+        function addMoreStars() {
+            const starsContainer = document.getElementById('stars');
+            for (let i = 0; i < 50; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                star.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                starsContainer.appendChild(star);
+            }
+        }
+
+        // Initialize on load
+        window.addEventListener('load', () => {
+            createStars();
+            createShapes();
+        });
+
+        // Add mouse movement effect
+        document.addEventListener('mousemove', (e) => {
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(card => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                const rotateX = (y - centerY) / 20;
+                const rotateY = (centerX - x) / 20;
+                
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-5px)`;
+            });
+        });
+    </script>
+</body>
+</html>
+
